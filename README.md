@@ -80,7 +80,7 @@ Use any local secret for `ANTHROPIC_AUTH_TOKEN`; Claude Code will send the same 
 ### 3. Start The Proxy
 
 ```bash
-uv run uvicorn server:app --host 0.0.0.0 --port 8082
+uv run uvicorn server:app --host 0.0.0.0 --port 8083
 ```
 
 Package install alternative:
@@ -100,13 +100,13 @@ Point `ANTHROPIC_BASE_URL` at the proxy root. Do not append `/v1`.
 PowerShell:
 
 ```powershell
-$env:ANTHROPIC_AUTH_TOKEN="freecc"; $env:ANTHROPIC_BASE_URL="http://localhost:8082"; claude
+$env:ANTHROPIC_AUTH_TOKEN="freecc"; $env:ANTHROPIC_BASE_URL="http://localhost:8083"; claude
 ```
 
 Bash:
 
 ```bash
-ANTHROPIC_AUTH_TOKEN="freecc" ANTHROPIC_BASE_URL="http://localhost:8082" claude
+ANTHROPIC_AUTH_TOKEN="freecc" ANTHROPIC_BASE_URL="http://localhost:8083" claude
 ```
 
 ## Choose A Provider
@@ -119,14 +119,14 @@ provider_id/model/name
 
 `MODEL` is the fallback. `MODEL_OPUS`, `MODEL_SONNET`, and `MODEL_HAIKU` override routing for requests that Claude Code sends for those tiers.
 
-| Provider | Prefix | Transport | Key | Default base URL |
-| --- | --- | --- | --- | --- |
-| NVIDIA NIM | `nvidia_nim/...` | OpenAI chat translation | `NVIDIA_NIM_API_KEY` | `https://integrate.api.nvidia.com/v1` |
-| OpenRouter | `open_router/...` | Anthropic Messages | `OPENROUTER_API_KEY` | `https://openrouter.ai/api/v1` |
-| DeepSeek | `deepseek/...` | Anthropic Messages | `DEEPSEEK_API_KEY` | `https://api.deepseek.com/anthropic` |
-| LM Studio | `lmstudio/...` | Anthropic Messages | none | `http://localhost:1234/v1` |
-| llama.cpp | `llamacpp/...` | Anthropic Messages | none | `http://localhost:8080/v1` |
-| Ollama | `ollama/...` | Anthropic Messages | none | `http://localhost:11434` |
+| Provider   | Prefix            | Transport               | Key                  | Default base URL                      |
+| ---------- | ----------------- | ----------------------- | -------------------- | ------------------------------------- |
+| NVIDIA NIM | `nvidia_nim/...`  | OpenAI chat translation | `NVIDIA_NIM_API_KEY` | `https://integrate.api.nvidia.com/v1` |
+| OpenRouter | `open_router/...` | Anthropic Messages      | `OPENROUTER_API_KEY` | `https://openrouter.ai/api/v1`        |
+| DeepSeek   | `deepseek/...`    | Anthropic Messages      | `DEEPSEEK_API_KEY`   | `https://api.deepseek.com/anthropic`  |
+| LM Studio  | `lmstudio/...`    | Anthropic Messages      | none                 | `http://localhost:1234/v1`            |
+| llama.cpp  | `llamacpp/...`    | Anthropic Messages      | none                 | `http://localhost:8080/v1`            |
+| Ollama     | `ollama/...`      | Anthropic Messages      | none                 | `http://localhost:11434`              |
 
 <details>
 <summary><b>NVIDIA NIM</b></summary>
@@ -248,7 +248,7 @@ MODEL="nvidia_nim/z-ai/glm4.7"
 ### Claude Code CLI
 
 ```bash
-ANTHROPIC_AUTH_TOKEN="freecc" ANTHROPIC_BASE_URL="http://localhost:8082" claude
+ANTHROPIC_AUTH_TOKEN="freecc" ANTHROPIC_BASE_URL="http://localhost:8083" claude
 ```
 
 ### VS Code Extension
@@ -257,7 +257,7 @@ Open Settings, search for `claude-code.environmentVariables`, choose **Edit in s
 
 ```json
 "claudeCode.environmentVariables": [
-  { "name": "ANTHROPIC_BASE_URL", "value": "http://localhost:8082" },
+  { "name": "ANTHROPIC_BASE_URL", "value": "http://localhost:8083" },
   { "name": "ANTHROPIC_AUTH_TOKEN", "value": "freecc" }
 ]
 ```
@@ -275,7 +275,7 @@ Set the environment for `acp.registry.claude-acp`:
 
 ```json
 "env": {
-  "ANTHROPIC_BASE_URL": "http://localhost:8082",
+  "ANTHROPIC_BASE_URL": "http://localhost:8083",
   "ANTHROPIC_AUTH_TOKEN": "freecc"
 }
 ```
@@ -295,7 +295,7 @@ claude-pick
 You can also create fixed aliases:
 
 ```bash
-alias claude-kimi='ANTHROPIC_BASE_URL="http://localhost:8082" ANTHROPIC_AUTH_TOKEN="freecc:moonshotai/kimi-k2.5" claude'
+alias claude-kimi='ANTHROPIC_BASE_URL="http://localhost:8083" ANTHROPIC_AUTH_TOKEN="freecc:moonshotai/kimi-k2.5" claude'
 ```
 
 ## Optional Integrations
@@ -435,7 +435,7 @@ These tools perform outbound HTTP from the proxy. Keep private-network access di
 
 Update to the latest commit first. Older versions could emit invalid usage metadata in streaming responses. Then check:
 
-- `ANTHROPIC_BASE_URL` is `http://localhost:8082`, not `http://localhost:8082/v1`.
+- `ANTHROPIC_BASE_URL` is `http://localhost:8083`, not `http://localhost:8083/v1`.
 - The proxy is returning Server-Sent Events for `/v1/messages`.
 - `server.log` contains no upstream 400/500 response before the malformed-response error.
 
@@ -469,7 +469,7 @@ Claude Code CLI / IDE
         |
         | Anthropic Messages API
         v
-Free Claude Code proxy (:8082)
+Free Claude Code proxy (:8083)
         |
         | provider-specific request/stream adapter
         v

@@ -21,7 +21,7 @@ async def test_messaging_start_failure_default_logs_exclude_traceback(caplog):
         allowed_dir="",
         claude_workspace="./agent_workspace",
         host="127.0.0.1",
-        port=8082,
+        port=8083,
         log_file="server.log",
         log_api_error_tracebacks=False,
     )

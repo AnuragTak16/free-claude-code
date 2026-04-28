@@ -155,18 +155,18 @@ class TestCLISession:
 
         session = CLISession(
             workspace_path="/tmp/test",
-            api_url="http://localhost:8082/v1",
+            api_url="http://localhost:8083/v1",
             allowed_dirs=["/home/user/projects"],
         )
         assert session.workspace == os.path.normpath(os.path.abspath("/tmp/test"))
-        assert session.api_url == "http://localhost:8082/v1"
+        assert session.api_url == "http://localhost:8083/v1"
         assert not session.is_busy
 
     def test_session_extract_session_id(self):
         """Test session ID extraction from various event formats."""
         from cli.session import CLISession
 
-        session = CLISession("/tmp", "http://localhost:8082/v1")
+        session = CLISession("/tmp", "http://localhost:8083/v1")
 
         # Direct session_id field
         assert session._extract_session_id({"session_id": "abc123"}) == "abc123"
@@ -199,7 +199,7 @@ class TestCLISession:
         """Test start_task running a basic command flow."""
         from cli.session import CLISession
 
-        session = CLISession("/tmp", "http://localhost:8082/v1")
+        session = CLISession("/tmp", "http://localhost:8083/v1")
 
         # Mock subprocess
         mock_process = AsyncMock()
@@ -243,7 +243,7 @@ class TestCLISession:
         """Test resuming an existing session."""
         from cli.session import CLISession
 
-        session = CLISession("/tmp", "http://localhost:8082/v1")
+        session = CLISession("/tmp", "http://localhost:8083/v1")
 
         mock_process = AsyncMock()
         mock_process.stdout.read.side_effect = [
@@ -270,7 +270,7 @@ class TestCLISession:
         """Test resuming an existing session and forking."""
         from cli.session import CLISession
 
-        session = CLISession("/tmp", "http://localhost:8082/v1")
+        session = CLISession("/tmp", "http://localhost:8083/v1")
 
         mock_process = AsyncMock()
         mock_process.stdout.read.side_effect = [b""]  # Immediate EOF
@@ -297,7 +297,7 @@ class TestCLISession:
         """Test process exit with error code and stderr output."""
         from cli.session import CLISession
 
-        session = CLISession("/tmp", "http://localhost:8082/v1")
+        session = CLISession("/tmp", "http://localhost:8083/v1")
 
         mock_process = AsyncMock()
         mock_process.stdout.read.side_effect = [b""]  # No stdout
@@ -325,7 +325,7 @@ class TestCLISession:
         """Stderr is drained concurrently so stdout streaming is not blocked."""
         from cli.session import CLISession
 
-        session = CLISession("/tmp", "http://localhost:8082/v1")
+        session = CLISession("/tmp", "http://localhost:8083/v1")
 
         mock_process = AsyncMock()
         mock_process.stdout.read.side_effect = [
@@ -381,7 +381,7 @@ class TestCLISession:
         """Test stopping the session process."""
         from cli.session import CLISession
 
-        session = CLISession("/tmp", "http://localhost:8082/v1")
+        session = CLISession("/tmp", "http://localhost:8083/v1")
 
         mock_process = MagicMock()
         mock_process.returncode = None  # Running
@@ -401,7 +401,7 @@ class TestCLISession:
         """Test force kill if terminate times out."""
         from cli.session import CLISession
 
-        session = CLISession("/tmp", "http://localhost:8082/v1")
+        session = CLISession("/tmp", "http://localhost:8083/v1")
 
         mock_process = MagicMock()
         mock_process.returncode = None
@@ -428,7 +428,7 @@ class TestCLISession:
         """Test handling of JSON split across chunks."""
         from cli.session import CLISession
 
-        session = CLISession("/tmp", "http://localhost:8082/v1")
+        session = CLISession("/tmp", "http://localhost:8083/v1")
 
         mock_process = AsyncMock()
         # Split json: {"type": "mess... age"}
@@ -457,7 +457,7 @@ class TestCLISession:
         """Test handling of buffer remnant at EOF (no newline at end)."""
         from cli.session import CLISession
 
-        session = CLISession("/tmp", "http://localhost:8082/v1")
+        session = CLISession("/tmp", "http://localhost:8083/v1")
 
         mock_process = AsyncMock()
         mock_process.stdout.read.side_effect = [
@@ -485,7 +485,7 @@ class TestCLISession:
         from cli.session import CLISession
 
         # URL not ending in /v1
-        session = CLISession("/tmp", "http://localhost:8082")
+        session = CLISession("/tmp", "http://localhost:8083")
 
         mock_process = AsyncMock()
         mock_process.stdout.read.side_effect = [b""]
@@ -502,7 +502,7 @@ class TestCLISession:
             # Check env var
             kwargs = mock_exec.call_args[1]
             env = kwargs["env"]
-            assert env["ANTHROPIC_BASE_URL"] == "http://localhost:8082"
+            assert env["ANTHROPIC_BASE_URL"] == "http://localhost:8083"
 
     @pytest.mark.asyncio
     async def test_start_task_allowed_dirs(self):
@@ -510,7 +510,7 @@ class TestCLISession:
         from cli.session import CLISession
 
         session = CLISession(
-            "/tmp", "http://localhost:8082/v1", allowed_dirs=["/dir1", "/dir2"]
+            "/tmp", "http://localhost:8083/v1", allowed_dirs=["/dir1", "/dir2"]
         )
 
         mock_process = AsyncMock()
@@ -537,7 +537,7 @@ class TestCLISession:
 
         session = CLISession(
             "/tmp",
-            "http://localhost:8082/v1",
+            "http://localhost:8083/v1",
             plans_directory="./agent_workspace/plans",
         )
 
@@ -565,7 +565,7 @@ class TestCLISession:
         """Test handling of non-JSON output from CLI."""
         from cli.session import CLISession
 
-        session = CLISession("/tmp", "http://localhost:8082/v1")
+        session = CLISession("/tmp", "http://localhost:8083/v1")
 
         mock_process = AsyncMock()
         mock_process.stdout.read.side_effect = [b"Not valid json\n", b""]
@@ -587,7 +587,7 @@ class TestCLISession:
         """Test exception handling during stop."""
         from cli.session import CLISession
 
-        session = CLISession("/tmp", "http://localhost:8082/v1")
+        session = CLISession("/tmp", "http://localhost:8083/v1")
 
         mock_process = MagicMock()
         mock_process.returncode = None
@@ -610,7 +610,7 @@ class TestCLISessionManager:
 
         manager = CLISessionManager(
             workspace_path="/tmp/test",
-            api_url="http://localhost:8082/v1",
+            api_url="http://localhost:8083/v1",
         )
 
         session, sid, is_new = await manager.get_or_create_session()
@@ -625,7 +625,7 @@ class TestCLISessionManager:
 
         manager = CLISessionManager(
             workspace_path="/tmp/test",
-            api_url="http://localhost:8082/v1",
+            api_url="http://localhost:8083/v1",
         )
 
         # Create first session
@@ -644,7 +644,7 @@ class TestCLISessionManager:
 
         manager = CLISessionManager(
             workspace_path="/tmp/test",
-            api_url="http://localhost:8082/v1",
+            api_url="http://localhost:8083/v1",
         )
 
         stats = manager.get_stats()
